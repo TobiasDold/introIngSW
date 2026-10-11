@@ -10,6 +10,11 @@ public class Calculator {
         return a * b;
     }
 
+    // New: multiply two decimal values (e.g. units * unit price)
+    public double multiply(double a, double b) {
+        return a * b;
+    }
+
     // Concatenate two strings
     public String concat(String a, String b) {
         if (b != null && a != null) {
