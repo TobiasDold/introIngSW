@@ -1,28 +1,49 @@
 package com.uem;
 
-import com.uem.model.Article;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uem.model.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
-        Order order = new Order("PED-001", List.of(
-                new Article("Ratón", 2, 15.0, 10.0),
-                new Article("Monitor", 1, 200.0, 25.0),
-                new Article("Cable", 4, 2.5, 0.0)
-        ));
 
-        System.out.println("Pedido: " + order.getId());
-        System.out.printf("%-10s %5s %10s %6s %10s %12s%n",
-                "Artículo", "Uds", "Precio", "Dto%", "Bruto", "Con dto");
-        for (Article a : order.getArticles()) {
-            System.out.printf("%-10s %5d %10.2f %6.1f %10.2f %12.2f%n",
-                    a.getName(), a.getQuantity(), a.getPrice(), a.getDiscount(),
-                    a.getGrossAmount(), a.getDiscountedAmount());
+    private static final Logger log = LoggerFactory.getLogger(Main.class);
+    private static final String ORDERS_FILE = "orders.json";
+
+    public static void main(String[] args) {
+        List<Order> orders = loadOrders(ORDERS_FILE);
+
+        for (Order order : orders) {
+            log.debug("Loaded order: {}", order.getId());
         }
-        System.out.printf("Total bruto:         %.2f%n", order.getGrossTotal());
-        System.out.printf("Total con descuento: %.2f%n", order.getDiscountedTotal());
-        System.out.println(order);
+        log.info("Total orders loaded: {}", orders.size());
+    }
+
+    /**
+     * Lee y parsea un fichero JSON del classpath (src/main/resources) a una lista de pedidos.
+     *
+     * @param resource nombre del fichero dentro de resources
+     * @return lista de pedidos; vacía si el fichero no existe o el parseo falla
+     */
+    static List<Order> loadOrders(String resource) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        // getResourceAsStream funciona tanto desde el IDE como empaquetado en .jar
+        try (InputStream is = Main.class.getClassLoader().getResourceAsStream(resource)) {
+            if (is == null) {
+                log.error("Resource not found: {}", resource);
+                return List.of();
+            }
+            // TypeReference conserva el tipo genérico List<Order> (borrado de tipos)
+            return mapper.readValue(is, new TypeReference<List<Order>>() {});
+        } catch (IOException e) {
+            log.error("Error parsing {}", resource, e);
+            return List.of();
+        }
     }
 }

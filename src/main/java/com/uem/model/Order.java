@@ -15,6 +15,7 @@ public class Order {
     private String id;
     private List<Article> articles;
 
+    /** Constructor vacío requerido por Jackson para instanciar el objeto al parsear el JSON. */
     public Order() {
         this.articles = new ArrayList<>();
     }

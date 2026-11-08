@@ -1,5 +1,6 @@
 package com.uem.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.uem.Calculator;
 
 /**
@@ -12,9 +13,11 @@ public class Article {
 
     private String name;
     private int quantity;
+    @JsonAlias("unitPrice") // el JSON usa "unitPrice"
     private double price;
     private double discount;
 
+    /** Constructor vacío requerido por Jackson para instanciar el objeto al parsear el JSON. */
     public Article() {
     }
 

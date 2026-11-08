@@ -13,6 +13,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <junit.jupiter.version>5.11.0</junit.jupiter.version>
         <junit.platform.version>1.11.0</junit.platform.version>
+        <jackson.version>2.18.2</jackson.version>
+        <logback.version>1.5.12</logback.version>
     </properties>
 
     <dependencies>
@@ -39,6 +41,20 @@
             <artifactId>junit-platform-suite</artifactId>
             <version>${junit.platform.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Lectura y parseo de ficheros JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Logging: logback-classic trae slf4j-api de forma transitiva -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
         </dependency>
     </dependencies>
 
