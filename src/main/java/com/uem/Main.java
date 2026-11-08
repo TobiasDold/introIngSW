@@ -2,7 +2,9 @@ package com.uem;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uem.controller.OrderController;
 import com.uem.model.Order;
+import com.uem.view.OrderView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,10 @@ public class Main {
             log.debug("Loaded order: {}", order.getId());
         }
         log.info("Total orders loaded: {}", orders.size());
+
+        // Initialize MVC
+        OrderView view = new OrderView();
+        new OrderController(view, orders);
     }
 
     /**

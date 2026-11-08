@@ -1,5 +1,7 @@
 package com.uem;
 
+import com.uem.model.Order;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +50,18 @@ public class Searcher {
             }
         }
         return results;
+    }
+
+    // Find an order by its exact id; returns null if not found or id is empty
+    public Order searchOrderById(String id, List<Order> orders) {
+        if (id == null || id.isEmpty() || orders == null) {
+            return null;
+        }
+        for (Order order : orders) {
+            if (id.equals(order.getId())) {
+                return order;
+            }
+        }
+        return null;
     }
 }
